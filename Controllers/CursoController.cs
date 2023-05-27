@@ -53,5 +53,34 @@ namespace PlataformaDeCurso.Controllers
             var Curso = _context.cursos.Where(x => x.nomeCurso.Contains(nome));
             return Ok(Curso);
         }
+
+        [HttpPut("atualizar/{id}")]
+        public IActionResult Atualizar(int id, Curso curso)
+        {
+            var Curso = _context.cursos.Find(id);
+            if (curso == null)
+            {
+                return NotFound();
+            }
+            Curso.Id = curso.Id;
+            Curso.nomeCurso = curso.nomeCurso;
+
+            _context.cursos.Update(Curso);
+            _context.SaveChanges();
+            return Ok(Curso);
+        }
+
+        [HttpDelete("deletar/{id}")]
+        public IActionResult Deletar(int id)
+        {
+            var cursoBanco = _context.cursos.Find(id);
+            if (cursoBanco == null)
+            {
+                return NotFound();
+            }
+            _context.cursos.Remove(cursoBanco);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }
